@@ -143,16 +143,31 @@ from peft import (
     get_peft_model
 )
 
-config = LoraConfig(
-    r=8,
-    lora_alpha=16,
-    target_modules=["q_proj", "v_proj"],
-    lora_dropout=0.05,
-    bias="none",
-    task_type="CAUSAL_LM"
-)
+class LoRAFineTune:
 
-model = get_peft_model(
-    model,
-    config
-)
+    def __init__(
+        self,
+        model,
+        r=8,
+        alpha=16,
+        dropout=0.05
+    ):
+        # LoRA CONFIG
+        self.config = LoraConfig(
+            r=r,
+            lora_alpha=alpha,
+            target_modules=[
+                "q_proj",
+                "v_proj"
+            ],
+            lora_dropout=dropout,
+            bias="none",
+            task_type="CAUSAL_LM"
+        )
+        # APPLY LORA
+        self.model = get_peft_model(
+            model,
+            self.config
+        )
+        # TRAINABLE PARAMS
+        self.model.print_trainable_parameters()
