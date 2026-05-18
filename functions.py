@@ -135,39 +135,3 @@ class Evaluation:
                 print(f"{metric}: {value}")
 
             print()
-
-
-
-from peft import (
-    LoraConfig,
-    get_peft_model
-)
-
-class LoRAFineTune:
-
-    def __init__(
-        self,
-        model,
-        r=8,
-        alpha=16,
-        dropout=0.05
-    ):
-        # LoRA CONFIG
-        self.config = LoraConfig(
-            r=r,
-            lora_alpha=alpha,
-            target_modules=[
-                "q_proj",
-                "v_proj"
-            ],
-            lora_dropout=dropout,
-            bias="none",
-            task_type="CAUSAL_LM"
-        )
-        # APPLY LORA
-        self.model = get_peft_model(
-            model,
-            self.config
-        )
-        # TRAINABLE PARAMS
-        self.model.print_trainable_parameters()
