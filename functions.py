@@ -4,7 +4,7 @@ from lm_eval import evaluator
 class model_initial :
   def __init__(self,name):
    
-    self.model = AutoModelforCasualLM.from_pretrained(name)
+    self.model = AutoModelforCasualLM.from_pretrained(name, device_map="auto")
     self.token = AutoTokenizer.from_pretrained(name)
     self.model.eval()
 
